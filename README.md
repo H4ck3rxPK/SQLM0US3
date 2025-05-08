@@ -3,5 +3,5 @@
 
 ## Sample Command
 ```python
-python3 SQLM0US3.py http://sample.com
+python3 SQLM0US3_xx.py http://sample.com
 ```
