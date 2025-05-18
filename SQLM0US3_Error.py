@@ -62,5 +62,5 @@ elif func == 1:
     print(dumpNumber(payload))
 elif func == 2:
     payload = input("Payload : ")
-    string,length=payload.rsplit(maxsplit=1)
+    string, length = payload.rsplit(maxsplit=1)
     print(dumpString(string,int(length)))
