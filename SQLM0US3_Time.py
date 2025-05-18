@@ -39,11 +39,6 @@ def dump_string(q, length):
         print(var)
     return var
 
-#password_length=dump_length("SELECT LENGTH(password) FROM users WHERE username = 'administrator'")
-#print(password_length)
-#password=dump_string("SELECT password FROM users WHERE username = 'administrator'", password_length)
-#print(password)
-
 func = int(input("""HTB_ACADEMY_ORACLE
 (1) Get Length
 (2) Get Name
