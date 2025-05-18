@@ -15,6 +15,12 @@ def oracle(q):
     #print(time.time() - start)
     return time.time() - start > delay
 
+# confirm oracle can run
+"""
+assert oracle("1=1")
+assert oracle("1=0")
+"""
+
 #Calculate the Length
 def dumpNumber(q):
     low = 0
