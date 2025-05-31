@@ -11,6 +11,7 @@ Your Option :
 ```
 
 You can type a number to choose a mode:
+
 ``1``: just enter only sql syntax, such as
 ```sql
 LEN(DB_NAME())
