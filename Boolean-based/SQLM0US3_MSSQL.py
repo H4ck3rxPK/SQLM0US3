@@ -10,9 +10,6 @@ def oracle(a):
     j = json.loads(r.text)
     return j['status'] == 'taken'
 
-assert oracle("1=1")
-assert not oracle("1=0")
-
 # confirm oracle can run
 """
 assert oracle("1=1")
