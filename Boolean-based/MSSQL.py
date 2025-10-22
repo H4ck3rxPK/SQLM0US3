@@ -15,7 +15,7 @@ def oracle(query):
 # confirm oracle can run
 """
 assert oracle("1=1")
-assert oracle("1=0")
+assert not oracle("1=0")
 """
 
 # Calculate the Length or Count
@@ -70,7 +70,7 @@ elif func == 4:
         row.append(data)
         if any(row):
             results.append(row)
-print(tabulate(results, headers=columns, tablefmt="grid"))
+    #print(tabulate(results, headers=columns, tablefmt="grid"))
 
 elif func == 5:
     payload = input("Payload : ")
@@ -78,7 +78,6 @@ elif func == 5:
 
 elif func == 6:
     payload = input("Payload : ")
-    payload = 
     length = dumpNumber(query)
     #string, length = payload.rsplit(maxsplit=1)
     print(dumpString(string,int(length)))
