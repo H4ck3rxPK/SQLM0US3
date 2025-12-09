@@ -10,7 +10,7 @@ def oracle(query):
     cookies = {
         "TrackingId": payload
     }
-    r = requests.get(url)
+    r = requests.get(url, cookies=cookies)
     #print(request.data)
     #print(r.text)
     #j = json.loads(r.text)
